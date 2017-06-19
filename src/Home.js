@@ -10,8 +10,9 @@ class Home extends Component {
 
       <div className="App">
         <div className="App-header">
-          <h2>VINYL</h2>
           <img src={icon} className="App-logo" alt="logo" />
+          <h2>VINYL</h2>
+          <h3>A community for record enthusiasts to review their favorite albums.</h3>
         </div>
 
       </div>
