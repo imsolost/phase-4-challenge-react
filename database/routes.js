@@ -12,7 +12,7 @@ app.use( cors() )
 app.get( '/all', ( request, response ) => {
   Albums.getAll()
   .then( results => response.json( results ) )
-  .catch( error = console.log('error', error ) )
+  .catch( error => console.log( 'error', error ) )
 })
 
 app.get( '/:id', ( request, response ) => {
