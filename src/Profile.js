@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router'
 
-class Library extends Component {
+class Profile extends Component {
 
   render() {
 
@@ -25,4 +25,4 @@ class Library extends Component {
   }
 }
 
-export default Library
+export default Profile

@@ -8,9 +8,9 @@ const connectionString = `pg://${process.env.USER}@localhost:5432/vinyl`
 const db = pgp( connectionString )
 
 const Albums = {
-  getAll: () => db.any("SELECT * FROM albums ORDER BY title ASC", []),
+  getAllAlbums: () => db.any("SELECT * FROM albums ORDER BY title ASC", []),
 
-  getOne: ( id ) => db.one("SELECT * FROM albums WHERE id = $1", [id]),
+  getAlbumById: ( id ) => db.one("SELECT * FROM albums WHERE id = $1", [id]),
 
   search: ( input ) => {
     input = `%${input}%`
@@ -31,4 +31,18 @@ const Albums = {
   createAlbum: ({ title, artist, cover }) => db.any("INSERT INTO albums (title, artist, cover) VALUES ($1, $2, $3)", [title, artist, cover])
 }
 
-module.exports = Albums
+const Reviews = {
+  getAllReviews: () => db.any("SELECT * FROM reviews ORDER BY id DESC"),
+
+  getReviewByAlbumId: ( album_id ) => db.any("SELECT * FROM reviews WHERE album_id = $1 ORDER BY title ASC", [album_id]),
+
+  getReviewByUserId: ( user_id ) => db.any("SELECT * FROM reviews WHERE user_id = $1 ORDER BY title ASC", [user_id])
+}
+
+const Users = {
+  getAllUsers: () => db.any("SELECT * FROM users ORDER BY id ASC", []),
+
+  getUserById: ( id ) => db.one("SELECT * FROM users WHERE id = $1", [id])
+}
+
+module.exports = { Albums, Reviews, Users }

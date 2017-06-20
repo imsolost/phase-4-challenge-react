@@ -3,21 +3,47 @@ const app = express()
 const cors = require( 'cors' )
 const pgp = require( 'pg-promise' )
 const bodyParser = require( 'body-parser' )
-const Albums = require( './db.js' )
+const { Albums, Reviews, Users } = require( './db.js' )
 
 app.use( bodyParser.json() )
 app.use( bodyParser.urlencoded({ extended: false }) )
 app.use( cors() )
 
-app.get( '/all', ( request, response ) => {
-  Albums.getAll()
+app.get( '/albums', ( request, response ) => {
+  Albums.getAllAlbums()
   .then( results => response.json( results ) )
   .catch( error => console.log( 'error', error ) )
 })
 
-app.get( '/:id', ( request, response ) => {
+app.get( '/reviews', ( request, response ) => {
+  Reviews.getAllReviews()
+  .then( results => response.json( results ) )
+  .catch( error => console.log( 'error', error ) )
+})
+
+app.get( '/users', ( request, response ) => {
+  Users.getAllUsers()
+  .then( results => response.json( results ) )
+  .catch( error => console.log( 'error', error ) )
+})
+
+app.get( '/albums/:id', ( request, response ) => {
   const { id } = request.params
-  Albums.getOne(id)
+  Albums.getAlbumById( id )
+    .then( results => response.json( results ) )
+    .catch( error => console.log( 'error', error ) )
+})
+
+app.get( '/reviews/albums/:id', ( request, response ) => {
+  const { id } = request.params
+  Reviews.getReviewByAlbumId( id )
+    .then( results => response.json( results ) )
+    .catch( error => console.log( 'error', error ) )
+})
+
+app.get( '/reviews/users/:id', ( request, response ) => {
+  const { id } = request.params
+  Reviews.getReviewByUserId( id )
     .then( results => response.json( results ) )
     .catch( error => console.log( 'error', error ) )
 })

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import icon from '../public/vinyl.png'
 import './App.css'
 import Library from './Library'
+import RecentReviews from './RecentReviews'
 import { Link } from 'react-router'
 
 class Home extends Component {
@@ -9,26 +10,41 @@ class Home extends Component {
     super( props )
     this.state = {
       albums: [],
+      reviews: [],
+      users: [],
+      currentUser: [],
       searchString: ''
     }
   }
 
   componentDidMount() {
     this.getAllAlbums()
-  }
-
-  componentDidUpdate() {
-    if (this.state.searchString.length === 0) {
-        this.getAllAlbums()
-    }
+    this.getAllReviews()
+    this.getAllUsers()
   }
 
   getAllAlbums() {
-    fetch('http://localhost:5000/all', {
+    fetch('http://localhost:5000/albums', {
       method: 'get',
     })
     .then( response => response.json() )
     .then( results => this.setState( { albums: results } ) )
+  }
+
+  getAllReviews() {
+    fetch( 'http://localhost:5000/reviews', {
+      method: 'get',
+    })
+    .then( response => response.json() )
+    .then( results => this.setState( { reviews: results } ) )
+  }
+
+  getAllUsers() {
+    fetch( 'http://localhost:5000/users', {
+      method: 'get',
+    })
+    .then( response => response.json() )
+    .then( results => this.setState( { users: results } ) )
   }
 
   getSearchedAlbums( input ) {
@@ -59,11 +75,23 @@ class Home extends Component {
           />
           <Link to='/signup'><button>Sign Up</button></Link>
           <Link to='/signin'><button>Sign In</button></Link>
+          {/* <Link to={{pathname: '/users/' + user.id, query: user.id}}>
+            <button>Profile</button>
+          </Link> */}
         </div>
 
-        <div className="row">
-          <Library albums={this.state.albums} />
+        <div className="records-reviews-wrapper">
+          <div className="records-column">
+            <h1> Records </h1>
+            <Library albums={this.state.albums} />
+          </div>
+          <div className="RecentReviews-column">
+            <h1> Recent Reviews </h1>
+            <RecentReviews albums={this.state.albums} reviews={this.state.reviews} users={this.state.users}/>
+          </div>
         </div>
+
+
       </div>
     )
   }
