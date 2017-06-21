@@ -34,6 +34,13 @@ app.get( '/albums/:id', ( request, response ) => {
     .catch( error => console.log( 'error', error ) )
 })
 
+app.get( '/users/:id', ( request, response ) => {
+  const { id } = request.params
+  Users.getUserById( id )
+    .then( results => response.json( results ) )
+    .catch( error => console.log( 'error', error ) )
+})
+
 app.get( '/reviews/albums/:id', ( request, response ) => {
   const { id } = request.params
   Reviews.getReviewByAlbumId( id )
@@ -71,9 +78,9 @@ app.put( '/:id/:field' , ( request, response ) => {
     .catch( error => console.log( 'error', error ) )
 })
 
-app.post( '/new', ( request, response ) => {
-  const { album } = request.body
-  Albums.createAlbum(album)
+app.post( '/users/new', ( request, response ) => {
+  const { user } = request.body
+  Users.createUser( user )
     .then( () => response.json({ 1: 'posted' }) )
     .catch( error => console.log( 'error', error ) )
 })

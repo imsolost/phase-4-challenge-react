@@ -27,22 +27,22 @@ const Albums = {
       return db.none("UPDATE albums SET artist = $2 WHERE id = $1", [id, input])
     }
   },
-
-  createAlbum: ({ title, artist, cover }) => db.any("INSERT INTO albums (title, artist, cover) VALUES ($1, $2, $3)", [title, artist, cover])
 }
 
 const Reviews = {
   getAllReviews: () => db.any("SELECT * FROM reviews ORDER BY id DESC"),
 
-  getReviewByAlbumId: ( album_id ) => db.any("SELECT * FROM reviews WHERE album_id = $1 ORDER BY title ASC", [album_id]),
+  getReviewByAlbumId: ( album_id ) => db.any("SELECT * FROM reviews WHERE album_id = $1 ORDER BY id DESC", [album_id]),
 
-  getReviewByUserId: ( user_id ) => db.any("SELECT * FROM reviews WHERE user_id = $1 ORDER BY title ASC", [user_id])
+  getReviewByUserId: ( user_id ) => db.any("SELECT * FROM reviews WHERE user_id = $1 ORDER BY id ASC", [user_id])
 }
 
 const Users = {
   getAllUsers: () => db.any("SELECT * FROM users ORDER BY id ASC", []),
 
-  getUserById: ( id ) => db.one("SELECT * FROM users WHERE id = $1", [id])
+  getUserById: ( id ) => db.one("SELECT * FROM users WHERE id = $1", [id]),
+
+  createUser: ({ name, email, password }) => db.any("INSERT INTO users (name, email, password) VALUES ($1, $2, $3)", [name, email, password])
 }
 
 module.exports = { Albums, Reviews, Users }

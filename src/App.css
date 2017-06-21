@@ -47,6 +47,7 @@ p {
 .label {
     display: flex;
     flex-direction: column;
+    width: 300px;
     height: 65vh;
     justify-content: space-between;
 }
@@ -61,7 +62,6 @@ p {
 }
 
 .tile:hover {
-	/*transform: scale(1.1);*/
 	opacity: .3;
 }
 
@@ -85,4 +85,12 @@ p {
 
 .review-view {
   margin-bottom: 50px;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  height: 35vh;
+  justify-content: space-between;
 }

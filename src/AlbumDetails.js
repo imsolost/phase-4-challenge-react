@@ -1,77 +1,91 @@
 import React, { Component } from 'react'
-import InlineEdit from 'react-edit-inline'
+import icon from '../public/vinyl.png'
 import { Link } from 'react-router'
 
 class AlbumDetails extends Component {
   constructor( props ) {
     super( props )
     this.state = {
-      album: {}
+      album: {},
+      reviews: [],
+      users: []
     }
   }
 
   componentDidMount() {
     this.getAlbum( this.props.params.id )
+    this.getReviews( this.props.params.id )
+    this.getAllUsers()
   }
 
   getAlbum = ( input ) => {
-    fetch(`http://localhost:5000/${input}`, {
+    fetch(`http://localhost:5000/albums/${input}`, {
       method: 'get',
     })
     .then( response => response.json() )
     .then( results => this.setState( { album: results } ) )
   }
 
-  editAlbum = ( data, field ) => {
-    let album = this.state.album
-    // console.log( 'album details data =====>', data )
-    // check this code
-    album.author = data.message
-
-    fetch( `http://localhost:5000/${album.id}/${field}`, {
-      headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-      },
-      method: 'put',
-      body: JSON.stringify({ input: data.message })
+  getReviews = (input) => {
+    fetch(`http://localhost:5000/reviews/albums/${input}`, {
+      method: 'get',
     })
-      .then( response => response.json() )
-      .then( results => {
-        console.log('results', results)
-        //should not be author, should be field variable
-         this.setState({ author: results })
-       })
+    .then( response => response.json() )
+    .then( results => this.setState( { reviews: results } ) )
   }
 
-  removeAlbum = () => {
-    let album = this.state.album
-    fetch(`http://localhost:5000/delete/${album.id}`, {
-      method: 'delete',
+  getAllUsers() {
+    fetch( 'http://localhost:5000/users', {
+      method: 'get',
     })
+    .then( response => response.json() )
+    .then( results => this.setState( { users: results } ) )
+  }
+
+  matchUserById( id ) {
+    let users = this.state.users
+    for ( let i = 0; i < users.length; i++ ) {
+      if ( users[i].id === id ) {
+        return users[i].name
+      }
+    }
   }
 
   render() {
     const album = this.state.album
-    const fieldsList = Object.keys(album).slice(1)
-    const inlineEdits = fieldsList.map( fieldName => {
-      return (
-        <InlineEdit
-          activeClassName="editing"
-          text={album[fieldName]}
-          paramName="message"
-          change={ data => this.editAlbum(data, fieldName) }
-          key={fieldName}/>
-      )
-    })
+    const reviews = this.state.reviews
+
+    const albumReviews = reviews.map( review =>
+      <div className="review-view" key={review.id}>
+        <p>{album.title}</p>
+        <p>{review.comments}</p>
+        <p>by {this.matchUserById(review.user_id)}</p>
+      </div>
+    )
 
     return (
-      <div>
-        <img src={album.cover}  alt="broken" />
-        <p>{inlineEdits[0]}</p>
-        <p>{inlineEdits[1]}</p>
-        <Link to='/'><button>Home</button></Link>
-        <Link to='/' onClick={this.removeAlbum}><button>Delete</button></Link>
+      <div className="App">
+        <div className="App-header">
+          <img src={icon} className="App-logo" alt="logo" />
+          <h3>VINYL</h3>
+          <p>A community for record enthusiasts to review their favorite albums.</p>
+          <Link to='/'><button>Home</button></Link>
+          <Link to='/'><button>Sign In</button></Link>
+          <Link to='/new'><button>Add Review</button></Link>
+        </div>
+
+        <div className="records-reviews-wrapper">
+          <div>
+            <img src={album.cover}  alt="broken" />
+            <p>{album.title}</p>
+            <p>{album.artist}</p>
+          </div>
+
+          <div className="recent-reviews">
+            {albumReviews}
+          </div>
+        </div>
+
       </div>
     )
   }

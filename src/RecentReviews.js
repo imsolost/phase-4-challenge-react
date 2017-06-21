@@ -23,7 +23,7 @@ class RecentReviews extends Component {
   render() {
     const reviews = this.props.reviews
 
-    const topReviews = reviews.map( review =>
+    const topReviews = reviews.slice(0, 3).map( review =>
       <div className="review-view" key={review.id}>
         <p>{this.matchAlbumById(review.album_id)}</p>
         <p>{review.comments}</p>

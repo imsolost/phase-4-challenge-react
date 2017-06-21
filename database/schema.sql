@@ -16,7 +16,8 @@ CREATE TABLE users (
   id SERIAL PRIMARY KEY,
   name VARCHAR(255),
   email VARCHAR(255),
-  password VARCHAR(255)
+  password VARCHAR(255),
+  signupdate date NOT NULL DEFAULT CURRENT_DATE
 );
 
 DROP TABLE IF EXISTS reviews;
@@ -29,16 +30,6 @@ CREATE TABLE reviews (
   FOREIGN KEY (album_id) REFERENCES albums(id)
 );
 
--- DROP TABLE IF EXISTS reviews;
--- CREATE TABLE reviews (
---   id SERIAL PRIMARY KEY,
---   user_name VARCHAR(255),
---   album_title VARCHAR(255),
---   comments VARCHAR(3000),
---   FOREIGN KEY (user_name) REFERENCES users(name),
---   FOREIGN KEY (album_title) REFERENCES albums(title)
--- );
-
 INSERT INTO
   albums (title, artist, cover)
 VALUES
@@ -48,21 +39,16 @@ VALUES
   ('In Rainbows', 'Radiohead', 'https://upload.wikimedia.org/wikipedia/en/2/2e/In_Rainbows_Official_Cover.jpg');
 
 INSERT INTO
-  users
+  users (name, email, password)
 VALUES
-(1, 'first user', 'email@gmail.com', 'password'),
-(2, 'second user', 'second@gmail.com', '12345');
+('first user', 'email@gmail.com', 'password'),
+('second user', 'second@gmail.com', '12345');
 
 INSERT INTO
-  reviews
+  reviews (user_id, album_id, comments)
 VALUES
-  (1, 1, 1, 'this is a good album'),
-  (2, 1, 3, 'this is a great album'),
-  (3, 2, 4, 'this is album made me cry');
-
--- INSERT INTO
---   reviews
--- VALUES
---   (1, 'first user', 'Malibu', 'this is a good album'),
---   (2, 'first user', 'Melodrama', 'this is a great album'),
---   (3, 'second user', 'In Rainbows', 'this is album made me cry');
+  (1, 1, 'this is a good album'),
+  (2, 2, 'this is a great album'),
+  (1, 4, 'this is album made me cry'),
+  (2, 3, 'this album is cray cray'),
+  (2, 2, 'I am a potato');

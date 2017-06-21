@@ -12,7 +12,7 @@ class Home extends Component {
       albums: [],
       reviews: [],
       users: [],
-      currentUser: [],
+      currentUser: '',
       searchString: ''
     }
   }
@@ -75,9 +75,6 @@ class Home extends Component {
           />
           <Link to='/signup'><button>Sign Up</button></Link>
           <Link to='/signin'><button>Sign In</button></Link>
-          {/* <Link to={{pathname: '/users/' + user.id, query: user.id}}>
-            <button>Profile</button>
-          </Link> */}
         </div>
 
         <div className="records-reviews-wrapper">
@@ -90,7 +87,6 @@ class Home extends Component {
             <RecentReviews albums={this.state.albums} reviews={this.state.reviews} users={this.state.users}/>
           </div>
         </div>
-
 
       </div>
     )
