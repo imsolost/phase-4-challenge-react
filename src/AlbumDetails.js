@@ -61,7 +61,7 @@ class AlbumDetails extends Component {
 
   newReviewOrNah() {
     if (this.state.currentUser === '') {
-      return 
+      return
     }
     return <Link to={{pathname: '/new', query: { album_id: this.state.album.id, user_id: this.props.location.query.user_id} }} >
       <button>New Review</button>
@@ -91,7 +91,7 @@ class AlbumDetails extends Component {
           <img src={icon} className="App-logo" alt="logo" />
           <h3>VINYL</h3>
           <p>A community for record enthusiasts to review their favorite albums.</p>
-          <Link to={{pathname: '/', query: { user_id: this.state.currentUser.id } }}><button>Home</button></Link>
+          <Link to={{pathname: '/', query: { user_id: this.props.location.query.user_id } }}><button>Home</button></Link>
 
           {this.signinOrSignout()}
           {this.newReviewOrNah()}
