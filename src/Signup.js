@@ -45,7 +45,7 @@ class Signup extends Component {
   }
 
   reroute = () => {
-    browserHistory.push(`users/${this.state.currentUserId}`)
+    browserHistory.push( `users/${this.state.currentUserId}` )
   }
 
   render() {

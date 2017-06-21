@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import icon from '../public/vinyl.png'
+import trashcan from '../public/trashcan.png'
 import { Link } from 'react-router'
 
 class Profile extends Component {
@@ -42,6 +43,12 @@ class Profile extends Component {
     .then( results => this.setState( { albums: results } ) )
   }
 
+  deleteReview = (id) => {
+    fetch(`http://localhost:5000/reviews/delete/${id}`, {
+      method: 'delete',
+    })
+  }
+
   matchAlbumById( id ) {
     let albums = this.state.albums
     for ( let i = 0; i < albums.length; i++ ) {
@@ -59,6 +66,7 @@ class Profile extends Component {
         <p>{this.matchAlbumById(review.album_id)}</p>
         <p>{review.comments}</p>
         <p>by {this.state.currentUser.name}</p>
+        <div onClick={this.deleteReview(review.id)}><img src={trashcan} alt="delete" style={{width: 50, height: 50}}/></div>
       </div>
     )
 
@@ -68,7 +76,7 @@ class Profile extends Component {
           <img src={icon} className="App-logo" alt="logo" />
           <h3>VINYL</h3>
           <p>A community for record enthusiasts to review their favorite albums.</p>
-          <Link to='/'><button>Home</button></Link>
+          <Link to={{pathname: '/', query: { user_id: this.state.currentUser.id } }}><button>Home</button></Link>
           <Link to='/'><button>Sign Out</button></Link>
         </div>
 

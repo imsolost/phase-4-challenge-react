@@ -62,19 +62,17 @@ app.get( '/search/:input', ( request, response ) => {
     .catch( error => console.log( 'error', error ) )
 })
 
-app.delete( '/delete/:id', ( request, response ) => {
+app.delete( '/reviews/delete/:id', ( request, response ) => {
   const { id } = request.params
-  Albums.deleteOne( id )
+  Reviews.deleteReview( id )
     .then( () => response.json({ 1: 'success' }) )
     .catch( error => console.log( 'error', error ) )
 })
 
-app.put( '/:id/:field' , ( request, response ) => {
-  const id = request.params.id
-  const field = request.params.field
-  const { input } = request.body
-  Albums.updateAlbum( id, field, input )
-    .then( () => response.json({ 1: 'updated' }) )
+app.post( '/reviews/new', ( request, response ) => {
+  const { review } = request.body
+  Reviews.createReview( review )
+    .then( () => response.json({ 1: 'posted' }) )
     .catch( error => console.log( 'error', error ) )
 })
 

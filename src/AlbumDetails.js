@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import icon from '../public/vinyl.png'
-import { Link } from 'react-router'
+import { Link, browserHistory } from 'react-router'
 
 class AlbumDetails extends Component {
   constructor( props ) {
@@ -8,7 +8,8 @@ class AlbumDetails extends Component {
     this.state = {
       album: {},
       reviews: [],
-      users: []
+      users: [],
+      currentUser: this.props.location.query.user_id || ''
     }
   }
 
@@ -51,7 +52,28 @@ class AlbumDetails extends Component {
     }
   }
 
+  signinOrSignout() {
+    if (this.state.currentUser === '') {
+      return <Link to='/signin'><button>Sign In</button></Link>
+    }
+    return <Link to='/' onClick={this.logout}><button>Sign Out</button></Link>
+  }
+
+  newReviewOrNah() {
+    if (this.state.currentUser === '') {
+      return 
+    }
+    return <Link to={{pathname: '/new', query: { album_id: this.state.album.id, user_id: this.props.location.query.user_id} }} >
+      <button>New Review</button>
+    </Link>
+  }
+
+  logout() {
+    this.setState( { currentUser: '' })
+  }
+
   render() {
+    // console.log(this.state.currentUser);
     const album = this.state.album
     const reviews = this.state.reviews
 
@@ -69,9 +91,15 @@ class AlbumDetails extends Component {
           <img src={icon} className="App-logo" alt="logo" />
           <h3>VINYL</h3>
           <p>A community for record enthusiasts to review their favorite albums.</p>
-          <Link to='/'><button>Home</button></Link>
-          <Link to='/'><button>Sign In</button></Link>
-          <Link to='/new'><button>Add Review</button></Link>
+          <Link to={{pathname: '/', query: { user_id: this.state.currentUser.id } }}><button>Home</button></Link>
+
+          {this.signinOrSignout()}
+          {this.newReviewOrNah()}
+
+          {/* <Link to={{pathname: '/new', query: { album_id: this.state.album.id, user_id: this.props.location.query.user_id} }} >
+            <button>New Review</button>
+          </Link> */}
+
         </div>
 
         <div className="records-reviews-wrapper">

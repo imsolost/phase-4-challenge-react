@@ -6,9 +6,9 @@ class NewReview extends Component {
     super(props)
 
     this.state = {
-      title: '',
-      comments: '',
-      user: ''
+      album_id: this.props.location.query.album_id || '',
+      user_id: this.props.location.query.user_id || '',
+      comments: ''
     }
   }
 
@@ -21,17 +21,14 @@ class NewReview extends Component {
       [name]: value
     })
 
-    console.log('state', this.state);
   }
 
   newReview = (event) => {
     event.preventDefault()
 
-    console.log('state?', this.state);
-
-    fetch('http://localhost:5000/new', {
+    fetch('http://localhost:5000/reviews/new', {
       method: 'post',
-      body:  JSON.stringify({ book: this.state }),
+      body:  JSON.stringify({ review: this.state }),
       headers: new Headers({
         'Content-Type': 'application/json',
         'Accept': 'application/json'
@@ -43,19 +40,17 @@ class NewReview extends Component {
 
     return (
       <div >
-        <form className="form" onSubmit={this.newBook}>
+        <form className="form" onSubmit={this.newReview}>
           <label className="label">
-            Title:
-            <input className="createImput" type="text" name="album_id" onChange={this.handleInputChange}/>
-            User:
-            <input className="createImput" name="user_id" onChange={this.handleInputChange}/>
-            Comments:
-            <textarea className="createImput" rows='5' name="comments" onChange={this.handleInputChange} value={this.state.value}/>
+            New Review for: {this.state.title}
+            <textarea className="createImput" rows='7' name="comments" onChange={this.handleInputChange} value={this.state.value}/>
           </label>
           <input type="submit" value="Submit" />
         </form>
 
-        <Link to='/'><button>Home</button></Link>
+        <Link to={{pathname: '/', query: { user_id: this.state.user_id} }} >
+          <button>Home</button>
+        </Link>
 
       </div>
     )

@@ -15,18 +15,8 @@ const Albums = {
   search: ( input ) => {
     input = `%${input}%`
     return db.any("SELECT * FROM albums WHERE UPPER(title) LIKE UPPER($1) OR UPPER(artist) LIKE UPPER($1) ORDER BY title ASC", [input])
-  },
+  }
 
-  deleteOne: ( id ) => db.none("DELETE FROM albums WHERE id = $1"),
-
-  updateAlbum: ( id, field, input ) => {
-    if (field === 'title') {
-      return db.none("UPDATE albums SET title = $2 WHERE id = $1", [id, input])
-    }
-    else if ( field === 'artist' ) {
-      return db.none("UPDATE albums SET artist = $2 WHERE id = $1", [id, input])
-    }
-  },
 }
 
 const Reviews = {
@@ -34,7 +24,11 @@ const Reviews = {
 
   getReviewByAlbumId: ( album_id ) => db.any("SELECT * FROM reviews WHERE album_id = $1 ORDER BY id DESC", [album_id]),
 
-  getReviewByUserId: ( user_id ) => db.any("SELECT * FROM reviews WHERE user_id = $1 ORDER BY id ASC", [user_id])
+  getReviewByUserId: ( user_id ) => db.any("SELECT * FROM reviews WHERE user_id = $1 ORDER BY id ASC", [user_id]),
+
+  createReview: ({ user_id, album_id, comments }) => db.any("INSERT INTO reviews (user_id, album_id, comments) VALUES ($1, $2, $3)", [user_id, album_id, comments]),
+
+  deleteReview: ( id ) => db.none("DELETE FROM reviews WHERE id = $1", [id])
 }
 
 const Users = {

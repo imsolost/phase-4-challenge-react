@@ -12,7 +12,7 @@ class Home extends Component {
       albums: [],
       reviews: [],
       users: [],
-      currentUser: '',
+      currentUser: this.props.location.query.user_id || '',
       searchString: ''
     }
   }
@@ -60,6 +60,25 @@ class Home extends Component {
     this.getSearchedAlbums( event.target.value )
   }
 
+  signupOrProfile() {
+    let currentUserId = `/users/${this.state.currentUser}`
+    if (this.state.currentUser === '') {
+      return <Link to='/signup'><button>Sign Up</button></Link>
+    }
+    return <Link to={currentUserId}><button>Profile</button></Link>
+  }
+
+  signinOrSignout() {
+    if (this.state.currentUser === '') {
+      return <Link to='/signin'><button>Sign In</button></Link>
+    }
+    return <Link to='/' onClick={this.logout}><button>Sign Out</button></Link>
+  }
+
+  logout() {
+    this.setState( { currentUser: '' })
+  }
+
   render() {
     return (
       <div className="App">
@@ -73,14 +92,14 @@ class Home extends Component {
             onChange={this.handleSearch.bind(this)}
             placeholder="Search"
           />
-          <Link to='/signup'><button>Sign Up</button></Link>
-          <Link to='/signin'><button>Sign In</button></Link>
+          {this.signupOrProfile()}
+          {this.signinOrSignout()}
         </div>
 
         <div className="records-reviews-wrapper">
           <div className="records-column">
             <h1> Records </h1>
-            <Library albums={this.state.albums} />
+            <Library albums={this.state.albums} currentUser={this.state.currentUser}/>
           </div>
           <div className="RecentReviews-column">
             <h1> Recent Reviews </h1>

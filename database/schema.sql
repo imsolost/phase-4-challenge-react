@@ -14,9 +14,9 @@ CREATE TABLE albums (
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,
-  name VARCHAR(255),
-  email VARCHAR(255),
-  password VARCHAR(255),
+  name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL,
   signupdate date NOT NULL DEFAULT CURRENT_DATE
 );
 
@@ -26,6 +26,7 @@ CREATE TABLE reviews (
   user_id int,
   album_id int,
   comments VARCHAR(3000),
+  reviewdate date NOT NULL DEFAULT CURRENT_DATE,
   FOREIGN KEY (user_id) REFERENCES users(id),
   FOREIGN KEY (album_id) REFERENCES albums(id)
 );
